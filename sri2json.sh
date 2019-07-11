@@ -27,6 +27,7 @@ else
 fi
 
 cd "${WORKDIR}"/new-website
+rm /sri/import-ready
 logi 'Processing SRI tree'
 git --no-pager log --pretty="format:" --name-only --since="$(date -Iseconds -r /sri/last-run)" -- sri | xargs -r -n1 -P1 jq --unbuffered -M '{component: (input_filename|split("/"))[1], version: ((input_filename|split("/"))[2]|sub(".json"; "")), hashes: [ to_entries[] | {file: .key, (.value|scan("(.*)-")[]): (.value|sub("(.*-)"; "")) } ] }' 2>/dev/null | mawk -F: -v decode_sha256="base64 -d - 2>/dev/null | xxd -p -c32 | tr -cd '[:xdigit:]'" '{ if ( $1 ~ "sha256") { ORS="";print $1": \""; print $2 | decode_sha256; close(decode_sha256); print "\"\n";ORS="\n" } else print $0 }' | jq -c '.' >/sri/SRI.json
 logi 'Processing SRI tree done'
