@@ -5,6 +5,8 @@ logi() {
 	printf "%s [INFO] ${SCRIPT_NAME}: %s\n" "$(date -Iseconds)" "$@" >&2
 }
 
+cd "${WORKDIR:=/tmp}" || exit 1
+
 # git configuration
 git config diff.renameLimit 999999 || true
 git config diff.suppressBlankEmpty || true
@@ -14,8 +16,6 @@ set -e
 if ! [ -f "${WORKDIR}"/last-run ]; then
 	touch -d 1980-01-01 -t 1980-01-01 /sri/last-run || exit 1
 fi
-
-cd "${WORKDIR:=/tmp}" || exit 1
 
 # Update sri tree from git repo
 if [ -d new-website/ ]; then
