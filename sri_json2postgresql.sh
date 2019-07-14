@@ -20,6 +20,6 @@ import_to_db () {
 if [ $PGPASSWORD ]; then
 	import_to_db
 else
-	logi '$PGPASSWORD not set, can'"'"'t connect to DB'
+	logi '$PGPASSWORD not set, can'\''t connect to DB'
 	exit 1
 fi
