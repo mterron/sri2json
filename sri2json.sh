@@ -20,7 +20,7 @@ cd "${WORKDIR:=/tmp}" || exit 1
 
 
 # Initialise last-run file
-if ! [ -f "${WORKDIR}"/last-run ]; then
+if ! [ -f /sri/last-run ]; then
 	touch -d 1980-01-01 -t 1980-01-01 /sri/last-run || exit 1
 fi
 

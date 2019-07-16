@@ -11,8 +11,8 @@ set -e
 import_to_db () {
 	if [ -f /sri/import-ready ]; then
 		logi 'Importing to DB'
-		# psql uses the lipq env variable to define username, password and host
-		logi "$(psql -c "COPY sri (data) FROM STDIN;" < /sri/SRI.json) records imported"
+		# psql uses the lipq env variables to define username, password and host
+		logi "$(psql -c 'COPY sri (data) FROM /sri/SRI.json WITH FREEZE') records imported"
 		mv -f /sri/SRI.json /sri/SRI.json.bak
 		rm -f /sri/import-ready
 	fi
