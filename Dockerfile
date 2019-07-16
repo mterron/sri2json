@@ -6,6 +6,5 @@ RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/r
 COPY sri2json.sh /usr/local/bin/
 COPY sri_json2postgresql.sh /usr/local/bin/
 COPY SRI_to_dtrack.sh /usr/local/bin
-COPY SRI.sql /tmp
 USER daemon
 ENTRYPOINT ["SRI_to_dtrack.sh"]
