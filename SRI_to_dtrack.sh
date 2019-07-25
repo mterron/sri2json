@@ -3,6 +3,6 @@
 mkdir -p /sri
 while true; do
 	sri2json.sh
-	sri_json2postgresql.sh
+	json2postgresql.sh /sri/SRI.json
 	sleep 1h
 done
