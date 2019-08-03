@@ -21,7 +21,7 @@ import_to_db () {
 }
 
 if [ $# -eq 1 ]; then
-	if [ $PGUSER ] && [ $PGHOST ] && [ $PGPASSWORD ]; then
+	if [ $PGUSER ] && [ $PGHOST ] && [ $PGPASSWORD ] && [ -f $1 ]; then
 		import_to_db "$1"
 	else
 		logi 'You must set $PGUSER, $PGPASSWORD and $PGHOST to connect to PostgreSQL'
