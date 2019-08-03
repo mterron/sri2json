@@ -28,13 +28,13 @@ fi
 
 # Update sri tree from git repo
 if [ -d new-website/ ]; then
-	logd 'Updating CDNJS SRI repo'
+	logd 'Updating CDNJS "new-website" repo'
 	cd "${WORKDIR}"/new-website/
 	if ! [  "$(git pull)" = 'Already up to date.' ]; then
 		process_sri_tree
 	fi
 else
-	logd 'Cloning CDNJS SRI repo'
+	logd 'Cloning CDNJS "new-website" repo'
 	git clone -q https://github.com/cdnjs/new-website.git
 	cd "${WORKDIR}"/new-website
 	# git configuration
