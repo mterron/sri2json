@@ -1,5 +1,6 @@
 #!/bin/sh
 # You need to have $PGUSER, $PGHOST & $PGPASSWORD set for this script to work
+# psql uses the libpq env variables to define username, password and host
 SCRIPT_NAME=$(basename -- "$0")
 
 logi() {
@@ -12,8 +13,7 @@ import_to_db () {
 	PATH="$(dirname -- $1)"
 	set -f
 	if [ -f "${PATH}/import-ready" ]; then
-		# logi 'Importing to DB'
-		# psql uses the libpq env variables to define username, password and host
+		logi "Importing $1 to DB"
 		logi "$(psql -c 'COPY untracked (data) FROM STDIN;' < $1) records imported"
 		mv -f "$1" "$1.bak"
 		rm -f "${PATH}/import-ready"
@@ -21,8 +21,11 @@ import_to_db () {
 }
 
 if [ $# -eq 1 ]; then
-	if [ $PGUSER ] && [ $PGHOST ] && [ $PGPASSWORD ] && [ -f $1 ]; then
+	if [ "$PGUSER" ] && [ "$PGHOST" ] && [ "$PGPASSWORD" ] && [ -f "$1" ]; then
 		import_to_db "$1"
+	elif [ ! -f "$1" ]; then
+		logi "$1 does not exist"
+		exit 1
 	else
 		logi 'You must set $PGUSER, $PGPASSWORD and $PGHOST to connect to PostgreSQL'
 		exit 1
