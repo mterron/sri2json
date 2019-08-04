@@ -10,18 +10,16 @@ logi() {
 set -e
 
 import_to_db () {
-	PATH="$(dirname -- $1)"
-	set -f
-	if [ -f "${PATH}/import-ready" ]; then
-		logi "Importing $1 to DB"
-		logi "$(psql -c 'COPY untracked (data) FROM STDIN;' < $1) records imported"
-		mv -f "$1" "$1.bak"
-		rm -f "${PATH}/import-ready"
-	fi
+	logi "Importing $1 to DB"
+	logi "$(psql -c 'COPY untracked (data) FROM STDIN;' < $1) records imported"
+	mv -f "$1" "$1.bak"
+	rm -f "${PATH}/import-ready"
 }
 
+
+PATH="$(dirname -- $1)"
 if [ $# -eq 1 ]; then
-	if [ "$PGUSER" ] && [ "$PGHOST" ] && [ "$PGPASSWORD" ] && [ -f "$1" ]; then
+	if [ "$PGUSER" ] && [ "$PGHOST" ] && [ "$PGPASSWORD" ] && [ -f "${PATH}/import-ready" ] && [ -f "$1" ]; then
 		import_to_db "$1"
 	elif [ ! -f "$1" ]; then
 		logi "$1 does not exist"
