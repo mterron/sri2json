@@ -1,4 +1,6 @@
-FROM alpine
+FROM alpine:3.10
+LABEL maintainer='Terror <miguel.a.terron@gmail.com>'
+WORKDIR /tmp
 RUN echo "@edge http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
 	&& apk add --no-cache curl mawk@edge jq git postgresql-client tzdata \
 	&& ln -sf /usr/bin/mawk /usr/bin/awk \
