@@ -9,21 +9,21 @@ CREATE UNIQUE INDEX idx_unique_versions ON untracked((data->>'name'),(data->>'ve
 
 
 CREATE OR REPLACE FUNCTION find_component_by_hash(hash TEXT)
-RETURNS TABLE (component text, version text) AS $$
+RETURNS TABLE (name text, version text) AS $$
 DECLARE
   q text;
 BEGIN
-q = 'SELECT data->>''name'' AS component, data->>''version'' AS version FROM untracked WHERE data->''hashes'' @> ''[{"sha256": ' || to_json(hash) || '}]''';
+q = 'SELECT data->>''name'' AS name, data->>''version'' AS version FROM untracked WHERE data->''hashes'' @> ''[{"sha256": ' || to_json(hash) || '}]''';
 RETURN QUERY EXECUTE q;
 END; $$
 LANGUAGE 'plpgsql' STABLE STRICT LEAKPROOF PARALLEL SAFE SECURITY DEFINER;
 
 CREATE OR REPLACE FUNCTION find_component_by_hash(hash TEXT, lang TEXT)
-RETURNS TABLE (component text, version text) AS $$
+RETURNS TABLE (name text, version text) AS $$
 DECLARE
   q text;
 BEGIN
-q = 'SELECT data->>''name'' AS component, data->>''version'' AS version FROM untracked WHERE data->''hashes'' @> ''[{"sha256": ' || to_json(hash) || '}]'' AND data->>''lang'' = ' || quote_literal(lang);
+q = 'SELECT data->>''name'' AS name, data->>''version'' AS version FROM untracked WHERE data->''hashes'' @> ''[{"sha256": ' || to_json(hash) || '}]'' AND data->>''lang'' = ' || quote_literal(lang);
 RETURN QUERY EXECUTE q;
 END; $$
 LANGUAGE 'plpgsql' STABLE STRICT LEAKPROOF PARALLEL SAFE SECURITY DEFINER;
