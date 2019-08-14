@@ -19,6 +19,8 @@ process_sri_tree() {
 	touch -d "$(date -d "@$(git log -1 --format=%ct)" +%Y%m%d%H%M.%S)" /sri/last-run
 	if ! [ "$(head -1 /sri/SRI.json | wc -c)" -eq 0 ]; then
 		touch /sri/import-ready
+	else
+		logd 'Nothing to import'
 	fi
 }
 

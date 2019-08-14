@@ -7,6 +7,11 @@ logi() {
 	printf "%s [INFO] ${SCRIPT_NAME}: %s\n" "$(date -Iseconds)" "$@" >&2
 }
 
+logd() {
+	if [ "${DEBUG:-0}" = 1 ]; then
+		printf "%s [DEBUG] ${SCRIPT_NAME}: %s\n" "$(date -Iseconds)" "$@" >&2
+    fi
+}
 set -e
 
 import_to_db () {
@@ -22,7 +27,7 @@ if [ $# -eq 1 ]; then
 	if [ "$PGUSER" ] && [ "$PGHOST" ] && [ "$PGPASSWORD" ] && [ -f "${JSON_PATH}/import-ready" ] && [ -f "$1" ]; then
 		import_to_db "$1"
 	elif [ ! -f "$1" ]; then
-		logi "$1 does not exist"
+		logd "$1 does not exist"
 		exit 1
 	else
 		logi 'You must set $PGUSER, $PGPASSWORD and $PGHOST to connect to PostgreSQL'
