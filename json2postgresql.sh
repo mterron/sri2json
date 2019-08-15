@@ -18,6 +18,7 @@ import_to_db () {
 	logi "Importing $1 to DB"
 	logi "$(psql -c 'COPY untracked (data) FROM STDIN;' < "$1") records imported"
 	mv -f "$1" "$1.bak"
+	touch "$1"
 	rm -f "${JSON_PATH}/import-ready"
 }
 
